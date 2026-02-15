@@ -12,7 +12,6 @@ body{
     background:#f1f3f6;
 }
 
-/* HEADER */
 header{
     background:#131921;
     color:white;
@@ -22,7 +21,6 @@ header{
     font-weight:bold;
 }
 
-/* NAV BUTTONS */
 .nav-buttons{
     display:flex;
     justify-content:center;
@@ -41,7 +39,6 @@ header{
     font-weight:bold;
 }
 
-/* SEARCH BAR */
 .search-bar{
     background:white;
     padding:10px;
@@ -54,19 +51,31 @@ header{
     border:1px solid #ddd;
 }
 
-/* BANNER */
 .banner{
     width:100%;
     overflow:hidden;
+    position:relative;
 }
 
-.banner img{
+.carousel{
+    position:relative;
+    width:100%;
+    height:180px;
+}
+
+.carousel img{
+    position:absolute;
     width:100%;
     height:180px;
     object-fit:cover;
+    opacity:0;
+    transition:opacity 0.8s ease-in-out;
 }
 
-/* CATEGORY SCROLL */
+.carousel img.active{
+    opacity:1;
+}
+
 .categories{
     display:flex;
     overflow-x:auto;
@@ -93,7 +102,6 @@ header{
     font-weight:bold;
 }
 
-/* PRODUCT GRID */
 .products-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -103,15 +111,22 @@ header{
 
 .product-card{
     background:white;
-    padding:10px;
+    padding:5px;
     border-radius:6px;
 }
 
 .product-card img{
     width:100%;
-    height:120px;
-    object-fit:cover;
+    height:150px;
+    object-fit:fill;
+    border-radius: 15px;
+    transition:transform 0.4s ease;
 }
+
+.product-card:hover img{
+    transform:scale(1.1);   /* Zoom in */
+}
+
 
 .product-card h4{
     font-size:14px;
@@ -123,12 +138,12 @@ header{
     font-weight:bold;
 }
 
-/* SELLER SECTION (UNCHANGED) */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
     gap:20px;
     padding:20px;
+
 }
 
 .card{
@@ -153,37 +168,42 @@ header{
     <button onclick="showSellers()">Explore Sellers</button>
 </div>
 
-<!-- ================= PRODUCT SECTION ================= -->
 <div id="productsSection">
 
+    <!-- Search -->
     <div class="search-bar">
         <input type="text" placeholder="Search for products...">
     </div>
 
+    <!-- Carousel Banner -->
     <div class="banner">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4NrxeS_xxUEzeFyn1aOZfPBVlAeYLAiBT3g&s">
+        <div class="carousel">
+            <img src="https://c8.alamy.com/zooms/9/499166faf7ca472a9a32596d9c55fe2a/mr1xtb.jpg" class="active">
+            <img src="https://www.shutterstock.com/image-vector/demo-blue-vector-draft-text-260nw-2339597125.jpg">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gnyPmk97AJuRZfiMqkCgcKiMaQtKpm2z5g&s">
+        </div>
     </div>
 
     <!-- Categories -->
     <div class="categories">
         <div>
-            <img src="https://via.placeholder.com/60">
+            <img src="https://img.freepik.com/premium-photo/choose-mobile-phone-row-different-smartphones-blue-background-3d_505080-171.jpg?semt=ais_user_personalization&w=740&q=80">
             <p>Mobiles</p>
         </div>
         <div>
-            <img src="https://via.placeholder.com/60">
+            <img src="https://img.freepik.com/free-photo/two-young-beautiful-smiling-hipster-female-trendy-white-sweater-coat_158538-16931.jpg?semt=ais_user_personalization&w=740&q=80">
             <p>Fashion</p>
         </div>
         <div>
-            <img src="https://via.placeholder.com/60">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJoebp0eCkj5NE6ujRC5OjIO8bYLmeKXKysg&s">
             <p>Electronics</p>
         </div>
         <div>
-            <img src="https://via.placeholder.com/60">
+            <img src="https://img.freepik.com/free-photo/still-life-various-cleaning-products_23-2150829640.jpg?semt=ais_wordcount_boost&w=740&q=80">
             <p>Home</p>
         </div>
         <div>
-            <img src="https://via.placeholder.com/60">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDGh_QYcQ9cGlhOT5q7ZSJLgnTQi_B4ka93g&s">
             <p>Appliances</p>
         </div>
     </div>
@@ -198,27 +218,39 @@ header{
 
 </div>
 
-<!-- ================= SELLER SECTION (UNCHANGED) ================= -->
+<!-- ================= SELLER SECTION ================= -->
 <div id="sellersSection" class="grid hidden"></div>
 
 <script>
 
-// PRODUCTS DATA
+/* ================= CAROUSEL LOGIC ================= */
+let slides = document.querySelectorAll(".carousel img");
+let index = 0;
+
+function showSlide(){
+    slides.forEach(slide => slide.classList.remove("active"));
+    slides[index].classList.add("active");
+    index = (index + 1) % slides.length;
+}
+
+setInterval(showSlide, 3000);
+
+
+/* ================= PRODUCTS ================= */
 const dealsProducts = [
-    {name:"Smartphone", price:"₹14,999", image:"https://via.placeholder.com/300"},
-    {name:"Headphones", price:"₹1,999", image:"https://via.placeholder.com/300"},
-    {name:"Shoes", price:"₹2,499", image:"https://via.placeholder.com/300"},
-    {name:"Watch", price:"₹1,299", image:"https://via.placeholder.com/300"}
+    {name:"Smartphone", price:"₹14,999", image:"https://www.adobe.com/creativecloud/photography/type/media_1b97e856d56c65e2461329a892f7d6a7eb5176e22.jpg?width=1200&format=pjpg&optimize=medium"},
+    {name:"Headphones", price:"₹1,999", image:"https://pickurneeds.in/cdn/shop/files/T-40White1.3.jpg?v=1727266386"},
+    {name:"Shoes", price:"₹2,499", image:"https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg"},
+    {name:"Watch", price:"₹1,299", image:"https://rukminim2.flixcart.com/image/480/640/xif0q/watch/d/n/r/1-resistance-luminous-taostry-boys-girls-original-imah62t5dkhrqtet.jpeg?q=90"}
 ];
 
 const trendingProducts = [
-    {name:"Laptop", price:"₹45,000", image:"https://via.placeholder.com/300"},
-    {name:"Backpack", price:"₹999", image:"https://via.placeholder.com/300"},
-    {name:"Gaming Mouse", price:"₹1,499", image:"https://via.placeholder.com/300"},
-    {name:"Bluetooth Speaker", price:"₹2,999", image:"https://via.placeholder.com/300"}
+    {name:"Laptop", price:"₹45,000", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRInwp3KwXrDSLlYu5VB6A5wwEG-yblJD_EOw&s"},
+    {name:"Backpack", price:"₹999", image:"https://rukminim2.flixcart.com/image/480/640/xif0q/backpack/r/m/z/9-leather-anti-theft-casual-laptop-backpack-with-usb-port-8-anti-original-imah8crnv58gacuk.jpeg?q=90"},
+    {name:"Gaming Mouse", price:"₹1,499", image:"https://rukminim2.flixcart.com/image/480/640/ky1vl3k0/mouse/y/f/d/wireless-gaming-mouse-adjustable-dpi-2-4-ghz-optical-charging-x8-original-imagad77gwawbgw8.jpeg?q=90"},
+    {name:"Bluetooth Speaker", price:"₹2,999", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSmyhRgfi5bBIwnXLOsPK54z2myKcW9kvOw&s"}
 ];
 
-// LOAD PRODUCTS
 function loadProducts(id, data){
     const container = document.getElementById(id);
     container.innerHTML = "";
@@ -237,12 +269,12 @@ loadProducts("deals", dealsProducts);
 loadProducts("trending", trendingProducts);
 
 
-// SELLERS DATA (UNCHANGED)
+/* SELLERS  */
 const sellers = [
-    {name:"Tech World", rating:"⭐⭐⭐⭐☆", image:"https://via.placeholder.com/300"},
-    {name:"Fashion Hub", rating:"⭐⭐⭐⭐⭐", image:"https://via.placeholder.com/300"},
-    {name:"Gadget Store", rating:"⭐⭐⭐☆☆", image:"https://via.placeholder.com/300"},
-    {name:"Sports Zone", rating:"⭐⭐⭐⭐☆", image:"https://via.placeholder.com/300"}
+    {name:"Tech World", rating:"⭐⭐⭐⭐☆", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTymSMtrBAbXMCGO9ejrtD32NZG7TgkFBt3hw&s"},
+    {name:"Fashion Hub", rating:"⭐⭐⭐⭐⭐", image:"https://content.jdmagicbox.com/comp/alandi/q5/020pxx20.xx20.230624200334.w7q5/catalogue/fashion-hub-charholi-budruk-alandi-readymade-garment-retailers-1pz4i3qlro.jpg"},
+    {name:"Gadget Store", rating:"⭐⭐⭐☆☆", image:"https://m.media-amazon.com/images/S/influencer-profile-image-prod/logo/influencer-0820d52a_1643355950476_original._CR377%2C0%2C1293%2C1293_._US500_SCLZZZZZZZ_.jpeg"},
+    {name:"Sports Zone", rating:"⭐⭐⭐⭐☆", image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbqKX8aYV105SlIyhH9Iua_UCPEZqQspAdjw&s"}
 ];
 
 const sellersSection = document.getElementById("sellersSection");
@@ -252,7 +284,7 @@ function loadSellers(){
     sellers.forEach(seller=>{
         sellersSection.innerHTML += `
         <div class="card">
-            <img src="${seller.image}" style="width:100%;height:150px;object-fit:cover;">
+            <img src="${seller.image}" style="width:100%;height:150px;object-fit:fit;">
             <h3>${seller.name}</h3>
             <p style="color:#f59e0b;font-weight:bold;">${seller.rating}</p>
             <button style="padding:8px 15px;background:#f59e0b;border:none;color:white;border-radius:5px;">
@@ -265,7 +297,7 @@ function loadSellers(){
 loadSellers();
 
 
-// TOGGLE
+/* ================= TOGGLE ================= */
 function showProducts(){
     document.getElementById("productsSection").classList.remove("hidden");
     sellersSection.classList.add("hidden");
@@ -280,3 +312,4 @@ function showSellers(){
 
 </body>
 </html>
+
